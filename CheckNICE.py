@@ -12,9 +12,9 @@ numCenters = 5 #K?
 numPoints = 2000
 numTotalEle = numCenters*numPoints
 dim = 2 #dimensions/features
-dia = 5 #standard deviation
+dia = 100 #standard deviation
 
-sideLength = 500 #range
+sideLength = 150 #range
 
 cov = np.identity(dim) * dia
 
@@ -67,19 +67,25 @@ LABEL_COLOR_MAP = {0: 'r',
                    4: 'm',
                    5: 'y'
                    }
-
+MARKER_MAP = {0: 'X',
+              1: 'o',
+              2: 's',
+              3: '*',
+              4: '^',
+              5: 'p',
+             }
 #plot NICE
 plt.figure()
 label_color = [LABEL_COLOR_MAP[l] for l in N_labels]
-plt.scatter(x=X[:,0], y=X[:,1], c=label_color)
-plt.scatter(x=N_clusters[0,:], y=N_clusters[1,:], marker='x', s=100, c='black') #might need to fix this line
+plt.scatter(x=X[:,0], y=X[:,1], c=label_color, s=10)
+plt.scatter(x=N_clusters[0,:], y=N_clusters[1,:], marker='x', s=100, c='black')
 plt.title('NICE KMeans')
 #plt.show()
 
 #plot sklearn
 plt.figure()
-label_color = [LABEL_COLOR_MAP[l] for l in S_labels]
-plt.scatter(x=data[:,0], y=data[:,1], c=label_color, s = 10)
-plt.scatter(x=S_clusters[:,0], y=S_clusters[:,1], marker='x', s=100, c='black') #LABEL_COLOR_MAP.values()
+label_color2 = [LABEL_COLOR_MAP[s] for s in S_labels]
+plt.scatter(x=data[:,0], y=data[:,1], c=label_color2, s = 10)
+plt.scatter(x=S_clusters[:,0], y=S_clusters[:,1], marker='x', s=100, c='black')
 plt.title("Sklearn KMeans")
 plt.show()
