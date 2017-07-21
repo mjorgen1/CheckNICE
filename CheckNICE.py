@@ -1,17 +1,15 @@
 import sys
-sys.path.insert(0, '/home/mackenzie/NICE/cpp/interface') #CHANGE
+sys.path.insert(0, '/home/mackenzie/GitRepo/NICE/cpp/build/interface')
 import pylab as plt
 from Nice4Py import KMean as N_KMean
 import numpy as np
 from sklearn.cluster import KMeans as S_KMeans
-from timeit import default_timer as timer
-
-
+import time
 
 #generate test data
 #DATASET
 numCenters = 5 #K?
-numPoints = 50
+numPoints = 2000
 numTotalEle = numCenters*numPoints
 dim = 2 #dimensions/features
 dia = 5 #standard deviation
@@ -22,6 +20,8 @@ cov = np.identity(dim) * dia
 
 #creates a new array
 data = np.empty([numCenters*numPoints, dim])
+dataSize = numCenters*numPoints
+print "The data size is: ", dataSize
 
 for i in np.arange(numCenters):
   mean = np.random.uniform(0, sideLength, dim)
@@ -42,11 +42,14 @@ plt.title('Data Before Clustering')
 NICE_KMeans = N_KMean("cpu")
 SKLearn_KMeans = S_KMeans(numCenters)
 
-start = timer()
+start = time.time()
 NICE_KMeans.fit(X, numTotalEle, dim, numCenters)
-end = timer()
-print ("Time to fit: ", (end-start))
+end = time.time()
+print ("Time to fit in NICE: ", (end-start))
+start = time.time()
 SKLearn_KMeans = SKLearn_KMeans.fit(data)
+end = time.time()
+print ("Time to fit in Sklearn: ", (end-start))
 
 N_labels = np.zeros(numTotalEle, dtype=np.float32)
 NICE_KMeans.getLabels(N_labels, numTotalEle, 1)
